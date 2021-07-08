@@ -5,6 +5,9 @@ import { TipoAcaoHistoricoRegistro } from './schemas/historico-registro.schema';
 import { HistoricoRegistroService } from './historico-registro.service';
 import { Acao } from './schemas/acao.schema';
 
+type Usuario = {
+  email: string;
+};
 @Injectable()
 export class AppService {
   constructor(
@@ -27,17 +30,18 @@ export class AppService {
   async update(id, data) {
     const registro = await this.__acaoModel.findOne({ _id: id });
 
-    await this.historicoRegistroService.registrarHistorico<Acao>({
-      usuarioAcao: '60e6ea6da6f0546168a9451f',
+    await this.historicoRegistroService.registrarHistorico<Acao, Usuario>({
+      usuarioAcao: {
+        nome: 'teste',
+        email: 'teste@mail.sicoob.com.br',
+      },
       nomeCollection: this.__acaoModel.modelName,
       idDocumentoCollection: id,
       documento: registro,
       acao: TipoAcaoHistoricoRegistro.ALTERAR,
     });
 
-    this.__acaoModel.findUpdate();
-
-    return this.__acaoModel.deleteMany({ _id: id }, data);
+    return this.__acaoModel.updateOne({ _id: id }, data);
   }
 
   async delete(id) {

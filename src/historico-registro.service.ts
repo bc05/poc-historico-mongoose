@@ -7,11 +7,15 @@ import {
   TipoAcaoHistoricoRegistro,
 } from './schemas/historico-registro.schema';
 
-type IRegistrarHistorico<T extends Typegoose> = {
-  usuarioAcao: String;
+type TUsuarioAcao = {
+  nome: String;
+};
+
+type TRegistrarHistorico<Documento extends Typegoose, T> = {
+  usuarioAcao: TUsuarioAcao & T;
   nomeCollection: String;
   idDocumentoCollection: String;
-  documento: T;
+  documento: Documento;
   acao: TipoAcaoHistoricoRegistro;
 };
 
@@ -22,11 +26,17 @@ export class HistoricoRegistroService {
     public readonly __historicoModel: ModelType<HistoricoRegistro>,
   ) {}
 
-  async registrarHistorico<T extends Typegoose>(data: IRegistrarHistorico<T>) {
+  async registrarHistorico<Documento extends Typegoose, Usuario>(
+    data: TRegistrarHistorico<Documento, Usuario>,
+  ) {
     await this.__historicoModel.create(data);
   }
 
-  async listarHistorico(idDocumento: String) {
-    return await this.__historicoModel.find({ idDocumento });
+  async restaurarDocumento(nomeCollection: string) {
+    const historico = await this.__historicoModel
+      .find({ nomeCollection })
+      .sort({ _id: 'desc' });
+
+    console.log('historico', historico);
   }
 }

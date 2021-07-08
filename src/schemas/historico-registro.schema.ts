@@ -8,24 +8,21 @@ export enum TipoAcaoHistoricoRegistro {
 
 export class HistoricoRegistro extends Typegoose {
   @prop({ required: true })
-  usuarioAcao: Types.ObjectId;
+  usuarioAcao!: Object;
 
-  @prop({ default: Date.now, index: true })
-  dataCriacao: Date;
-
-  @prop()
-  idDocumentoCollection: Types.ObjectId;
+  @prop({ required: true, index: true })
+  nomeCollection!: String;
 
   @prop({ required: true })
-  documento: Object;
-
-  @prop({ required: true })
-  nomeCollection: String;
+  documento!: Object;
 
   @prop({
     enum: TipoAcaoHistoricoRegistro,
   })
-  acao: TipoAcaoHistoricoRegistro;
+  acao!: TipoAcaoHistoricoRegistro;
+
+  @prop({ default: Date.now, index: true })
+  dataCriacao!: Date;
 
   static get model(): ModelType<HistoricoRegistro> {
     return new HistoricoRegistro().getModelForClass(HistoricoRegistro, {
@@ -38,7 +35,7 @@ export class HistoricoRegistro extends Typegoose {
   }
 }
 
-const schemaOptions: SchemaOptions = {
+const schemaOptions: Readonly<SchemaOptions> = {
   toJSON: {
     virtuals: true,
     getters: true,
