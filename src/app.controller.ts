@@ -1,7 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { get } from 'config';
 import { AppService } from './app.service';
-import { AcaoModel } from './schemas/acao.schema';
 
 @Controller()
 export class AppController {
@@ -15,8 +13,8 @@ export class AppController {
   @Get('create')
   create() {
     const data = {
-      nome: 'teste',
-      descricao: 'descricao',
+      nome: 'Acao 01',
+      descricao: 'Descrição da Ação 01',
     };
     return this.appService.create(data);
   }
@@ -24,7 +22,7 @@ export class AppController {
   @Get('update/:id/')
   update(@Param('id') id: string) {
     console.log('passou no update', id);
-    this.appService.update(id, { nome: 'novo nome' });
+    this.appService.update(id, { nome: 'Novo nome para a ação 02' });
   }
 
   @Get('delete/:id')

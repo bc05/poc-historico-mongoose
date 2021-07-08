@@ -3,7 +3,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Acao, AcaoModel, HistoricoAcaoModel } from './schemas/acao.schema';
+import { Acao, AcaoModel } from './schemas/acao.schema';
+import { HistoricoRegistro } from './schemas/historico-registro.schema';
+import { HistoricoRegistroService } from './historico-registro.service';
 
 @Module({
   imports: [
@@ -13,14 +15,14 @@ import { Acao, AcaoModel, HistoricoAcaoModel } from './schemas/acao.schema';
       useNewUrlParser: true,
     }),
     MongooseModule.forFeature([
-      { name: AcaoModel.modelName, schema: Acao.model.schema },
+      { name: AcaoModel.modelName, schema: AcaoModel.model.schema },
       {
-        name: HistoricoAcaoModel.modelName,
-        schema: HistoricoAcaoModel.model.schema,
+        name: HistoricoRegistro.modelName,
+        schema: HistoricoRegistro.model.schema,
       },
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, HistoricoRegistroService],
 })
 export class AppModule {}
